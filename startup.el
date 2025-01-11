@@ -38,8 +38,6 @@
 
 (setq window-combination-resize t) ; take new window space from all other windows
 
-(setq x-stretch-cursor t)
-
 (setq-default dired-listing-switches "-alh")
 
 (setq dired-dwim-target t)
