@@ -1,0 +1,8 @@
+(evil-global-set-key 'motion "j" 'evil-next-visual-line)
+(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+(jl/leader-key "aa" 'indent-region)
+(jl/leader-key "ar" 'align-regexp)
+(jl/leader-key "er" (lambda ()
+		      (interactive)
+		      (dired (file-name-directory (or (buffer-file-name) "~/dot-emacs/emacs-config.org")))))
+(jl/leader-key "gg" 'magit)
