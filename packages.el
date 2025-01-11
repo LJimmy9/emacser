@@ -114,7 +114,7 @@
   :config
   (general-define-key
    :keymaps 'evil-motion-state-map
-   "vv" #'er/expand-region
+   "C-d" #'er/expand-region
    ))
 
 (use-package magit
