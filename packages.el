@@ -92,6 +92,10 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package xclip
+  :config
+  (xclip-mode))
+
 (use-package vertico
   :ensure t
   :init

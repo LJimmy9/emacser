@@ -209,6 +209,14 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
+** xclip
+
+#+begin_src elisp :tangle packages.el
+  (use-package xclip
+    :config
+    (xclip-mode))
+#+end_src
+
 ** Minibuffer
 
 *** Vertico
