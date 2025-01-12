@@ -1,126 +1,132 @@
-(add-hook 'server-after-make-frame-hook #'my/set-font)
-
-(setq package-archives '(("melpa"  . "https://melpa.org/packages/")
-			 ("gnu"    . "https://elpa.gnu.org/packages/")
-			 ("nongnu" . "https://elpa.nongnu.org/nongnu/")))
-
-(defvar bootstrap-version)
-(defvar comp-deferred-compilation-deny-list ())
-(let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-(straight-use-package '(use-package :build t))
+(require 'package)
 (setq use-package-always-ensure t)
 
-(use-package general
-  :straight (:build t)
-  :init
-  (general-auto-unbind-keys)
+(package-initialize)
+
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+
+(use-package modus-themes
+  :ensure t
   :config
-  (general-create-definer jl/undefine
-    :keymaps 'override
-    :states '(normal emacs))
-  (general-create-definer jl/evil
-    :states '(normal))
-  (general-create-definer jl/leader-key
-    :states '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix "SPC"
-    :global-prefix "C-SPC")
-  (general-create-definer jl/major-leader-key
-    :states '(normal insert visual emacs)
-    :keymaps 'override
-    :prefix ","
-    :global-prefix "M-m"))
+  (load-theme 'modus-vivendi-tinted :no-confirm-loading))
+
+(use-package nerd-icons
+  :ensure t)
+
+(use-package nerd-icons-completion
+  :ensure t
+  :after marginalia
+  :config
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :config
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+(use-package nerd-icons-dired
+  :ensure t
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(use-package dired
+  :ensure nil
+  :commands (dired)
+  :hook
+  ((dired-mode . dired-hide-details-mode)
+   (dired-mode . hl-line-mode))
+  :config
+  (add-hook 'dired-mode-hook 'auto-revert-mode)
+  (setq-default dired-listing-switches "-alh")
+  (setq dired-dwim-target t)
+  (setq dired-auto-revert-buffer 1)
+  (setq dired-recursive-copies 'always)
+  (setq dired-recursive-deletes 'always)
+  (setq delete-by-moving-to-trash t)
+  (setq dired-dwim-target t))
+
+(use-package undo-fu
+  :ensure t
+  :config
+  (global-unset-key (kbd "C-z"))
+  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
+  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
 
 (use-package evil
-  :straight (:build t)
-  :after (general)
+  :ensure t
   :init
   (setq evil-want-integration t
 	evil-want-keybinding nil
 	evil-want-C-u-scroll t
-	evil-want-C-i-jump nil)
-  (require 'evil-vars)
+	evil-want-C-d-scroll nil
+	evil-want-C-i-jump t
+	evil-respect-visual-line-mode t
+	evil-undo-system 'undo-fu)
   :config
-  (general-define-key
-   :keymaps 'evil-motion-state-map
-   "SPC" nil
-   ","   nil
-   "C-e" nil
-   "C-y" nil
-   "C-f" nil
-   "C-b" nil
-   "C-d" nil
-   "gj" nil
-   "gk" nil
-   )
-  (general-define-key
-   :keymaps 'evil-insert-state-map
-   "C-t" nil
-   "U"   nil
-   "C-a" nil
-   "C-d" nil
-   "C-y" nil
-   )
   (evil-mode 1)
-  (setq evil-want-fine-undo t)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
-
+  )
 
 (use-package evil-collection
+  :ensure t
   :after evil
-  :straight (:build t)
   :config
   (evil-collection-init))
 
-
 (use-package evil-nerd-commenter
+  :ensure t
   :after evil
-  :straight (:build t)
-  :config
-  (general-define-key
-   :keymaps 'evil-motion-state-map
-   "gcc" #'evilnc-comment-or-uncomment-lines
-  ))
-
-(use-package doom-themes
-  :straight (:build t)
-  :defer t
-  :init (load-theme 'doom-nord-aurora t))
-
-(require 'time)
-(setq display-time-format "%Y-%m-%d %H:%M")
-(display-time-mode 1)
-
-(let ((battery-str (battery)))
-  (display-battery-mode 1))
+  )
 
 (use-package expand-region
-  :config
-  (general-define-key
-   :keymaps 'evil-motion-state-map
-   "C-d" #'er/expand-region
-   ))
+:ensure t)
 
 (use-package magit
-  :ensure t)
+  :ensure t
+  :config
+  (with-eval-after-load 'magit-mode
+    (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+    ))
 
 (use-package rainbow-delimiters
-  :straight (:build t)
-  :defer t
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode 1)
+  (setq vertico-cycle t)
+  (setq vertico-resize t))
+
+(use-package marginalia
+  :ensure t
+  :hook (after-init . marginalia-mode))
+
+(use-package orderless
+  :ensure t
+  :config
+  (setq completion-styles '(orderless basic))
+  (setq completion-category-defaults nil)
+  (setq completion-category-overrides nil))
+
+(use-package savehist
+  :ensure nil ; it is built-in
+  :hook (after-init . savehist-mode))
+
+(use-package corfu
+  :ensure t
+  :hook (after-init . global-corfu-mode)
+  :bind (:map corfu-map ("<tab>" . corfu-complete))
+  :config
+  (setq tab-always-indent 'complete)
+  (setq corfu-preview-current nil)
+  (setq corfu-min-width 20)
+
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation after `corfu-popupinfo-delay'
+
+  ;; Sort by input history (no need to modify `corfu-sort-function').
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history)))

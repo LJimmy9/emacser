@@ -1,5 +1,4 @@
-(setq package-enable-at-startup nil
-      inhibit-startup-message   t
+(setq	inhibit-startup-message   t
       frame-resize-pixelwise    t  ; fine resize
       package-native-compile    t) ; native compile packages
 
@@ -14,11 +13,9 @@
 (when (fboundp 'tooltip-mode)
   (tooltip-mode -1))
 
-(when (fboundp 'set-fringe-mode)
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
 
-  (set-fringe-mode 10))
-
-(setq package-enable-at-startup nil)
 
 (setq ns-use-native-fullscreen :true)
 (add-to-list 'default-frame-alist '(fullscreen . fullscreen))
