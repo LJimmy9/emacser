@@ -59,7 +59,7 @@
   (setq evil-want-integration t
 	evil-want-keybinding nil
 	evil-want-C-u-scroll t
-	evil-want-C-d-scroll nil
+	evil-want-C-d-scroll t
 	evil-want-C-i-jump t
 	evil-respect-visual-line-mode t
 	evil-undo-system 'undo-fu)

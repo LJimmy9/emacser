@@ -6,7 +6,6 @@
 (define-key evil-motion-state-map (kbd "C-y") nil)
 (define-key evil-motion-state-map (kbd "C-f") nil)
 (define-key evil-motion-state-map (kbd "C-b") nil)
-(define-key evil-motion-state-map (kbd "C-d") nil)
 (define-key evil-motion-state-map (kbd "ge") #'er/expand-region)
 (define-key evil-motion-state-map (kbd "gr") #'er/contract-region)
 
@@ -18,6 +17,7 @@
 (define-key evil-insert-state-map (kbd "C-d") nil)
 (define-key evil-insert-state-map (kbd "C-y") nil)
 
+(evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-save-modified-and-close)
 (evil-define-key 'normal 'global (kbd "<leader>aa") 'indent-region)
 (evil-define-key 'normal 'global (kbd "<leader>ar") 'align-regexp)
 (evil-define-key 'normal 'global (kbd "<leader>ss") 'save-buffer)
