@@ -8,6 +8,7 @@
 (setq-default sentence-end-double-space nil)
 (global-subword-mode 1)
 (setq scroll-conservatively 1000)
+(save-place-mode t)
 
 (setq delete-by-moving-to-trash t)
 (setopt use-short-answers t)

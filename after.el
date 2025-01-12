@@ -27,3 +27,12 @@
 (evil-define-key 'normal 'global (kbd "<leader>er") (lambda ()
 						      (interactive)
 						      (dired (file-name-directory (or (buffer-file-name) locate-user-emacs-file)))))
+
+
+(evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-ripgrep)
+(evil-define-key 'normal 'global (kbd "<leader>ff") 'consult-fd)
+(evil-define-key 'normal 'global (kbd "<leader>fo") 'consult-outline)
+(evil-define-key 'normal 'global (kbd "<leader>fl") 'consult-line)
+(evil-define-key 'normal 'global (kbd "<leader>fb") 'consult-buffer)
+(evil-define-key 'normal 'global (kbd "<leader>fm") 'consult-mark)
+(evil-define-key 'normal 'global (kbd "<leader>fr") 'consult-register)

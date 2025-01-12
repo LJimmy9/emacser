@@ -130,3 +130,28 @@
   (with-eval-after-load 'savehist
     (corfu-history-mode 1)
     (add-to-list 'savehist-additional-variables 'corfu-history)))
+
+(use-package embark
+  :bind
+  (("C-." . embark-act)						;; pick some comfortable binding
+   ("M-." . embark-dwim)						;; good alternative: M-.
+   ("C-h B" . embark-bindings))					;; alternative for `describe-bindings'
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  ;; Hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+		 '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+		   nil
+		   (window-parameters (mode-line-format . none)))))
+
+(use-package consult
+    :hook (completion-list-mode . consult-preview-at-point-mode)
+    :init
+    (setq consult-project-function nil)					;; always work from the current directory (use `cd' to switch directory)
+    (setq register-preview-delay 0.1
+	  register-preview-function #'consult-register-format)
+    (advice-add #'register-preview :override #'consult-register-window)
+)
+  (use-package embark-consult
+    :after (embark consult))
