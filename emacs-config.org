@@ -209,18 +209,6 @@
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-** Clipboard
-
-#+begin_src elisp
-  (use-package clipmon
-    :config
-    (setq save-interprogram-paste-before-kill t)
-    (setq kill-ring-max 500) ; default is 60 in Emacs 24.4
-    ;; monitor the system clipboard and add any changes to the kill ring
-    (add-to-list 'after-init-hook 'clipmon-mode-start))
-
-#+end_src
-
 ** Minibuffer
 
 *** Vertico
