@@ -1,8 +1,7 @@
-(evil-set-leader nil (kbd "SPC"))
-
 (define-key evil-motion-state-map (kbd "SPC") nil)
 (define-key evil-motion-state-map (kbd ",") nil)
 (define-key evil-motion-state-map (kbd "C-e") nil)
+(define-key evil-insert-state-map (kbd "C-e") nil)
 (define-key evil-motion-state-map (kbd "C-y") nil)
 (define-key evil-motion-state-map (kbd "C-f") nil)
 (define-key evil-motion-state-map (kbd "C-b") nil)
@@ -17,22 +16,22 @@
 (define-key evil-insert-state-map (kbd "C-d") nil)
 (define-key evil-insert-state-map (kbd "C-y") nil)
 
-(evil-define-key 'normal 'global (kbd "<leader>qq") 'evil-save-modified-and-close)
-(evil-define-key 'normal 'global (kbd "<leader>aa") 'indent-region)
-(evil-define-key 'normal 'global (kbd "<leader>ar") 'align-regexp)
-(evil-define-key 'normal 'global (kbd "<leader>ss") 'save-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>xe") 'eval-last-sexp)
-(evil-define-key 'normal 'global (kbd "<leader>gg") 'magit-status)
+
+(define-key minibuffer-local-map (kbd "C-n") 'vertico-next)
+(define-key minibuffer-local-map (kbd "C-p") 'vertico-prev)
+
+
+(evil-leader/set-key
+  "aa" 'indent-region
+  "ar" 'align-regexp
+  "qq" 'evil-save-modified-and-close
+  "ss" 'save-buffer
+  "xe" 'eval-last-sexp
+  "gg" 'magit-status
+  "rr" 'compile
+  "er" (lambda ()
+	     (interactive)
+	     (dired (file-name-directory (or (buffer-file-name) locate-user-emacs-file))))
+  )
+
 (evil-define-key 'normal 'global (kbd "gcc") 'evilnc-comment-or-uncomment-lines)
-(evil-define-key 'normal 'global (kbd "<leader>er") (lambda ()
-						      (interactive)
-						      (dired (file-name-directory (or (buffer-file-name) locate-user-emacs-file)))))
-
-
-(evil-define-key 'normal 'global (kbd "<leader>fg") 'consult-ripgrep)
-(evil-define-key 'normal 'global (kbd "<leader>ff") 'consult-fd)
-(evil-define-key 'normal 'global (kbd "<leader>fo") 'consult-outline)
-(evil-define-key 'normal 'global (kbd "<leader>fl") 'consult-line)
-(evil-define-key 'normal 'global (kbd "<leader>fb") 'consult-buffer)
-(evil-define-key 'normal 'global (kbd "<leader>fm") 'consult-mark)
-(evil-define-key 'normal 'global (kbd "<leader>fr") 'consult-register)
